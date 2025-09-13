@@ -4,15 +4,16 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+
+	"github.com/Perehodko/final_project_go/pkg/api"
 )
 
 func StartServer(port int, webDir string) error {
+	// Инициализируем API обработчики
+	api.Init()
+
 	// Обслуживание статических файлов
 	http.Handle("/", http.FileServer(http.Dir(webDir)))
-
-	// Здесь позже будут добавлены API endpoints
-	// http.HandleFunc("/api/tasks", api.GetTasksHandler)
-	// http.HandleFunc("/api/tasks/add", api.AddTaskHandler)
 
 	log.Printf("Запуск веб-сервера на порту %d", port)
 	log.Printf("Откройте http://localhost:%d/ в браузере", port)
