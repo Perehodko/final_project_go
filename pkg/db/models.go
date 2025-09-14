@@ -1,22 +1,48 @@
 package db
 
-import "os"
+import (
+	"fmt"
+	"time"
+)
 
-// Task представляет модель задачи
+// Task представляет задачу в системе
 type Task struct {
-	ID      int64  `db:"id" json:"id"`
-	Date    string `db:"date" json:"date"`       // формат YYYYMMDD
-	Title   string `db:"title" json:"title"`     // VARCHAR(255)
-	Comment string `db:"comment" json:"comment"` // TEXT
-	Repeat  string `db:"repeat" json:"repeat"`   // VARCHAR(128)
+	ID      int64  `json:"id"`
+	Date    string `json:"date"`
+	Title   string `json:"title"`
+	Comment string `json:"comment"`
+	Repeat  string `json:"repeat"`
 }
 
-// GetDBPath возвращает путь к файлу БД
-func GetDBPath() string {
-	// Проверяем переменную окружения TODO_DBFILE
-	if dbFile := os.Getenv("TODO_DBFILE"); dbFile != "" {
-		return dbFile
+// TaskResponse представляет ответ API для задач
+type TaskResponse struct {
+	ID    int64  `json:"id,omitempty"`
+	Error string `json:"error,omitempty"`
+}
+
+// ToMap преобразует задачу в map для удобства работы с БД
+func (t *Task) ToMap() map[string]interface{} {
+	return map[string]interface{}{
+		"date":    t.Date,
+		"title":   t.Title,
+		"comment": t.Comment,
+		"repeat":  t.Repeat,
 	}
-	// Используем значение по умолчанию (совпадает с тестом)
-	return "../scheduler.db"
+}
+
+// Validate проверяет корректность данных задачи
+func (t *Task) Validate() error {
+	if t.Title == "" {
+		return fmt.Errorf("не указан заголовок задачи")
+	}
+
+	// Проверяем формат даты, если она указана
+	if t.Date != "" {
+		_, err := time.Parse("20060102", t.Date)
+		if err != nil {
+			return fmt.Errorf("неверный формат даты")
+		}
+	}
+
+	return nil
 }
