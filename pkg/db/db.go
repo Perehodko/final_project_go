@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"time"
 
 	"github.com/jmoiron/sqlx"
 	_ "modernc.org/sqlite"
@@ -69,16 +70,24 @@ func Close() error {
 	return nil
 }
 
-// AddTask добавляет задачу в БД
+// AddTask добавляет новую задачу в базу данных
 func AddTask(task *Task) (int64, error) {
-	if err := task.Validate(); err != nil {
-		return 0, err
+	db := GetDB()
+	if db == nil {
+		return 0, fmt.Errorf("база данных не инициализирована")
 	}
 
-	query := `INSERT INTO scheduler (date, title, comment, repeat) VALUES (?, ?, ?, ?)`
-	result, err := DB.Exec(query, task.Date, task.Title, task.Comment, task.Repeat)
+	data := task.ToMap()
+
+	// Убедимся, что дата не пустая
+	if data["date"] == "" {
+		data["date"] = time.Now().Format("20060102")
+	}
+
+	query := `INSERT INTO scheduler (date, title, comment, repeat) VALUES (:date, :title, :comment, :repeat)`
+	result, err := db.NamedExec(query, data)
 	if err != nil {
-		return 0, fmt.Errorf("ошибка добавления задачи: %v", err)
+		return 0, fmt.Errorf("ошибка вставки задачи: %v", err)
 	}
 
 	id, err := result.LastInsertId()

@@ -6,7 +6,7 @@ import "net/http"
 func Init() {
 	http.HandleFunc("/api/nextdate", NextDateHandler)
 	http.HandleFunc("/api/task", taskHandler)
-	// Здесь будут регистрироваться другие обработчики по мере реализации
+	http.HandleFunc("/api/tasks", tasksHandler)
 	// http.HandleFunc("/api/tasks", TasksHandler)
 	// http.HandleFunc("/api/task", TaskHandler)
 	// http.HandleFunc("/api/task/done", TaskDoneHandler)

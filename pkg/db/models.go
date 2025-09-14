@@ -7,7 +7,7 @@ import (
 
 // Task представляет задачу в системе
 type Task struct {
-	ID      int64  `json:"id"`
+	ID      string `json:"id"` // Изменяем на string для JSON
 	Date    string `json:"date"`
 	Title   string `json:"title"`
 	Comment string `json:"comment"`
@@ -16,7 +16,7 @@ type Task struct {
 
 // TaskResponse представляет ответ API для задач
 type TaskResponse struct {
-	ID    int64  `json:"id,omitempty"`
+	ID    string `json:"id,omitempty"` // Изменяем на string
 	Error string `json:"error,omitempty"`
 }
 

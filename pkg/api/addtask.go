@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"strconv"
 	"time"
 
 	"github.com/Perehodko/final_project_go/pkg/db"
@@ -36,8 +37,8 @@ func addTaskHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Возвращаем успешный ответ
-	writeJSONResponse(w, map[string]interface{}{"id": id}, http.StatusOK)
+	// Возвращаем успешный ответ (конвертируем int64 в string)
+	writeJSONResponse(w, map[string]interface{}{"id": strconv.FormatInt(id, 10)}, http.StatusOK)
 }
 
 // processTask обрабатывает и валидирует данные задачи
