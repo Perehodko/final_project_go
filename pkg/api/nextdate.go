@@ -63,7 +63,7 @@ func handleDailyRule(now, date time.Time, parts []string) (string, error) {
 		return "", fmt.Errorf("interval out of range (1-400): %d", interval)
 	}
 
-	// Увеличиваем дату пока она не станет больше now
+	// Увеличиваем на заданное количество дней пока дата не станет больше now
 	for {
 		date = date.AddDate(0, 0, interval)
 		if afterNow(date, now) {
@@ -117,7 +117,7 @@ func handleWeeklyRule(now, date time.Time, parts []string) (string, error) {
 	for i := 0; i < 400; i++ { // Защита от бесконечного цикла
 		current = current.AddDate(0, 0, 1)
 
-		// Convert to ISO weekday (1=Monday, 7=Sunday)
+		// Проверяем, что текущий день входит в список дней недели
 		weekday := int(current.Weekday())
 		if weekday == 0 {
 			weekday = 7 // Sunday
@@ -146,6 +146,7 @@ func handleMonthlyRule(now, date time.Time, parts []string) (string, error) {
 		if err != nil {
 			return "", fmt.Errorf("invalid month day: %s", dayStr)
 		}
+		// Проверяем, что день месяца находится в допустимом диапазоне
 		if day != -1 && day != -2 && (day < 1 || day > 31) {
 			return "", fmt.Errorf("month day out of range: %d", day)
 		}

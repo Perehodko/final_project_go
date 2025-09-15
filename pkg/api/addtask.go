@@ -77,7 +77,7 @@ func processTask(task *db.Task) error {
 
 	// Если дата в прошлом
 	if !afterNow(parsedDate, now) {
-		// ВСЕГДА используем текущую дату, независимо от правила повторения
+		// Всегда используем текущую дату, независимо от правила повторения
 		task.Date = currentDate
 	}
 

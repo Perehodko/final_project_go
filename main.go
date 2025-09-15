@@ -12,7 +12,7 @@ import (
 )
 
 func main() {
-	// Путь к БД - в родительской директории (где тесты ожидают)
+	// Путь к БД - в родительской директории 
 	dbFile := "scheduler.db"
 
 	// Но если есть переменная окружения, используем её
@@ -45,10 +45,11 @@ func main() {
 	}
 }
 
+// getPort возвращает порт для работы с сервером. Если переменная окружения TODO_PORT не задана или некорректна, 
+// используется стандартный порт 8080
 func getPort() int {
-	// 1. Проверяем переменную окружения TODO_PORT
 	if envPort := os.Getenv("TODO_PORT"); envPort != "" {
-		if port, err := strconv.Atoi(envPort); err == nil && port > 0 && port < 65536 {
+		if port, err := strconv.Atoi(envPort); err == nil {
 			log.Printf("Используем порт из переменной окружения TODO_PORT: %d", port)
 			return port
 		} else {
@@ -56,7 +57,6 @@ func getPort() int {
 		}
 	}
 
-	// 2. Используем порт из tests/settings.go
 	log.Printf("Используем порт по умолчанию: %d", tests.Port)
 	return tests.Port
 }

@@ -26,11 +26,16 @@ CREATE INDEX IF NOT EXISTS idx_scheduler_date ON scheduler(date);
 
 // Init инициализирует базу данных
 func Init(dbFile string) error {
+	var install bool
+
 	// Проверяем существование файла БД
 	_, err := os.Stat(dbFile)
-	install := os.IsNotExist(err)
+	
+	if err != nil {
+		install = true
+	}
 
-	// Открываем базу данных с sqlx
+	// Открываем базу данных 
 	DB, err = sqlx.Open("sqlite", dbFile)
 	if err != nil {
 		return fmt.Errorf("ошибка открытия БД: %v", err)
@@ -57,7 +62,7 @@ func Init(dbFile string) error {
 	return nil
 }
 
-// GetDB возвращает экземпляр БД (может пригодиться)
+// GetDB возвращает экземпляр БД 
 func GetDB() *sqlx.DB {
 	return DB
 }
