@@ -191,7 +191,7 @@ func UpdateTask(task *Task) error {
 	}
 
 	if count == 0 {
-		return fmt.Errorf("задача не найдена")
+        return fmt.Errorf(`incorrect id for updating task`)
 	}
 
 	return nil
@@ -229,12 +229,12 @@ func DeleteTask(idStr string) error {
 	return nil
 }
 
-// UpdateTaskDate обновляет только дату задачи (переименовываем из UpdateDate)
+// UpdateTaskDate обновляет только дату задачи 
 func UpdateTaskDate(idStr string, newDate string) error {
 	db := GetDB()
 	if db == nil {
 		return fmt.Errorf("база данных не инициализирована")
-	}
+	} 
 
 	// Конвертируем string ID в int64 для запроса к БД
 	id, err := strconv.ParseInt(idStr, 10, 64)
