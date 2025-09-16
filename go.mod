@@ -3,6 +3,7 @@ module github.com/Perehodko/final_project_go
 go 1.23.0
 
 require (
+	github.com/golang-jwt/jwt/v4 v4.5.2
 	github.com/jmoiron/sqlx v1.4.0
 	github.com/stretchr/testify v1.11.1
 	modernc.org/sqlite v1.38.2

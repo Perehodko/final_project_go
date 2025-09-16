@@ -30,12 +30,12 @@ func Init(dbFile string) error {
 
 	// Проверяем существование файла БД
 	_, err := os.Stat(dbFile)
-	
+
 	if err != nil {
 		install = true
 	}
 
-	// Открываем базу данных 
+	// Открываем базу данных
 	DB, err = sqlx.Open("sqlite", dbFile)
 	if err != nil {
 		return fmt.Errorf("ошибка открытия БД: %v", err)
@@ -62,7 +62,7 @@ func Init(dbFile string) error {
 	return nil
 }
 
-// GetDB возвращает экземпляр БД 
+// GetDB возвращает экземпляр БД
 func GetDB() *sqlx.DB {
 	return DB
 }
